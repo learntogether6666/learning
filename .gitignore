@@ -1,0 +1,26 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*~
+.obsidian/workspace*
+
+# Scratch / local-only
+scratch/
+tmp/
+*.local
+.env
+
+# Lab artifacts (don't commit generated data / volumes)
+**/data/
+**/_volumes/
+**/*.log
+**/node_modules/
+
+# NOTE: Claude's machine-local memory (~/.claude) is intentionally NOT in this repo.
+# Portable context lives in Observability/00-Roadmap/STATUS.md instead.
