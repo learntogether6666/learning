@@ -16,6 +16,13 @@ tmp/
 *.local
 .env
 
+# Secrets — NEVER commit (tokens, credentials)
+.token
+*.token
+.personal-credentials
+*credentials*
+.secrets/
+
 # Lab artifacts (don't commit generated data / volumes)
 **/data/
 **/_volumes/
