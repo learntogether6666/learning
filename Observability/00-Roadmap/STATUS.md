@@ -43,14 +43,15 @@
 ## Progress Log (newest first)
 | Date | What happened | Next |
 |---|---|---|
+| 2026-06-29 | **Launched `AI-Infra/` as a top-level domain** (scope decision resolved: build+operate, NOT just Phase 14 observability). Drafted two production-grade reference docs from user's "LearnAI" prompt: **Section 1 — AI Infrastructure Foundations** (`AI-Infra/01-Foundations/`): GPU compute (H100/H200/GB200, SMs/Tensor Cores/HBM), CUDA stack (NCCL/cuDNN/cuBLAS/CUDA Graphs/Transformer Engine), NVLink/NVSwitch, InfiniBand+SHARP, storage (NVMe-oF/GDS/parallel FS), DP/TP/PP/EP/ZeRO parallelism, 2T memory math, FP8 stability, checkpoints. **Section 2 — LearnAI Production Stack** (`AI-Infra/02-Production-Stack/`): 4-region design, T/FT/I clusters, model lifecycle+placement, adapter multiplexing, real-time inference physics (prefill/decode disaggregation, KV cache, continuous batching, TTFT/ITL SLOs), failover + goodput math, team model, observability control loop, economics. Added missing components (power/cooling, scheduling, collectives, economics) flagged as "ADDED". + `AI-Infra/README.md`. | Build per-section LABS (local-first: kind + DCGM exporter + tiny vLLM serve → reproduce KV-cache pressure / continuous batching / simulated straggler → goodput collapse). Tool-decision arena: vLLM vs TRT-LLM vs SGLang. Interview Q-banks. |
 | 2026-06-29 | Completed GitHub setup: repo `learntogether6666/learning` pushed (scaffold + CLAUDE.md + hardened .gitignore). Token kept in gitignored `.token`; credentials ISOLATED in repo-local `.git/.personal-credentials` (work keychain/SSH untouched, fully walled off). Cross-laptop continuity verified (CLAUDE.md → STATUS.md). **User pivoting focus from Observability → AI Infrastructure.** | Fresh session: scope AI-Infra. Decide top-level `AI-Infra/` domain vs Observability Phase 14. |
 | 2026-06-26 | Built roadmap, learning template, maturity model, tool matrix, reference architecture, section-roadmap template, Metrics section roadmap. Agreed deferred-tools workflow; md+Mermaid+GitHub. Set up Git repo. | Decide: stamp all section roadmaps vs start learning Metrics. |
 
 ## Current Position
-- **Phase:** Setup complete. Observability scaffold built; learning not yet started. **Pivoting to AI Infrastructure.**
-- **Active section:** none yet. User wants to switch gears to **AI Infra**.
-- **Open decision for next (fresh) session:** Is "AI Infra" the planned **top-level `AI-Infra/` domain** (broader: GPU clusters, training/inference infra) or **Observability Phase 14** (AI-infra *observability* within the Observability track)? Scope it, then build its roadmap from `SECTION-ROADMAP-TEMPLATE.md` (or a domain README if top-level).
-- **Note:** Observability remains scaffolded and ready to resume anytime (Metrics is the first learning target there).
+- **Active domain:** **`AI-Infra/`** (new top-level domain — scope decision RESOLVED: build+operate hyperscale AI infra, NVIDIA-only, twin focus = 2T training + real-time inference).
+- **Done:** `AI-Infra/` Section 1 (Foundations) + Section 2 (Production Stack) + README drafted as production-grade reference docs. Both Mermaid-rich, hyperscale numbers, failure modes, economics. "Missing" components added & flagged.
+- **Next:** (1) per-section **labs** — local-first kind + DCGM exporter + tiny vLLM serve to reproduce KV-cache pressure, continuous batching, simulated-straggler → goodput collapse; (2) **tool-decision arena** for inference engines (vLLM vs TensorRT-LLM vs SGLang) using the Tool Decision Arena template; (3) **interview Q-bank** per section; (4) **cost model** ($/token, $/training-run, MW capacity).
+- **Note:** Observability remains scaffolded and ready to resume anytime (Metrics is the first learning target there; Phase 14 cross-links to this new domain).
 
 ## How to Resume (checklist for any new session/machine)
 1. Read this STATUS.md.
