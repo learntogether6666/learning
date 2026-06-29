@@ -43,12 +43,14 @@
 ## Progress Log (newest first)
 | Date | What happened | Next |
 |---|---|---|
-| 2026-06-26 | Built roadmap, learning template, maturity model, tool matrix, reference architecture, section-roadmap template, Metrics section roadmap. Agreed deferred-tools workflow; md+Mermaid+GitHub. Set up Git repo + pushed to GitHub. | Decide: stamp all section roadmaps vs start learning Metrics. |
+| 2026-06-29 | Completed GitHub setup: repo `learntogether6666/learning` pushed (scaffold + CLAUDE.md + hardened .gitignore). Token kept in gitignored `.token`; credentials ISOLATED in repo-local `.git/.personal-credentials` (work keychain/SSH untouched, fully walled off). Cross-laptop continuity verified (CLAUDE.md → STATUS.md). **User pivoting focus from Observability → AI Infrastructure.** | Fresh session: scope AI-Infra. Decide top-level `AI-Infra/` domain vs Observability Phase 14. |
+| 2026-06-26 | Built roadmap, learning template, maturity model, tool matrix, reference architecture, section-roadmap template, Metrics section roadmap. Agreed deferred-tools workflow; md+Mermaid+GitHub. Set up Git repo. | Decide: stamp all section roadmaps vs start learning Metrics. |
 
 ## Current Position
-- **Phase:** Pre-Phase-1 (setup complete, learning not yet started).
-- **Active section:** none yet. First learning target = **Metrics (Phase 5)** OR Fundamentals (Phase 1).
-- **Open decision for next session:** (a) generate remaining section roadmaps, then (b) begin learning.
+- **Phase:** Setup complete. Observability scaffold built; learning not yet started. **Pivoting to AI Infrastructure.**
+- **Active section:** none yet. User wants to switch gears to **AI Infra**.
+- **Open decision for next (fresh) session:** Is "AI Infra" the planned **top-level `AI-Infra/` domain** (broader: GPU clusters, training/inference infra) or **Observability Phase 14** (AI-infra *observability* within the Observability track)? Scope it, then build its roadmap from `SECTION-ROADMAP-TEMPLATE.md` (or a domain README if top-level).
+- **Note:** Observability remains scaffolded and ready to resume anytime (Metrics is the first learning target there).
 
 ## How to Resume (checklist for any new session/machine)
 1. Read this STATUS.md.
