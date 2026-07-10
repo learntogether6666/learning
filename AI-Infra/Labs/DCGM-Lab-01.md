@@ -54,20 +54,15 @@ framework for data center GPUs. The architecture is a classic agent-daemon patte
 
 ```mermaid
 flowchart TD
-    subgraph Host ["Host (bare metal or VM)"]
-        NVD["NVIDIA Driver<br/>(kernel module)"]
-        HE["nv-hostengine<br/>DCGM daemon<br/>port 5555 / Unix socket"]
-        DCGMLIB["libdcgm.so<br/>DCGM library"]
-        DCGMI["dcgmi CLI"]
-        EXPORTER["dcgm-exporter<br/>Prometheus :9400"]
-        PYAPI["Python bindings<br/>pydcgm"]
-        CUSTOM["Custom app<br/>libdcgm / gRPC"]
-    end
-
-    subgraph Stack ["Prometheus Stack"]
-        PROM["Prometheus<br/>:9090"]
-        GRAFANA["Grafana<br/>:3000"]
-    end
+    NVD[NVIDIA Driver - kernel module]
+    HE[nv-hostengine - DCGM daemon - port 5555]
+    DCGMLIB[libdcgm.so - DCGM library]
+    DCGMI[dcgmi CLI]
+    EXPORTER[dcgm-exporter - Prometheus port 9400]
+    PYAPI[Python bindings - pydcgm]
+    CUSTOM[Custom app via libdcgm]
+    PROM[Prometheus - port 9090]
+    GRAFANA[Grafana - port 3000]
 
     NVD --> HE
     HE --> DCGMLIB
@@ -75,7 +70,7 @@ flowchart TD
     DCGMLIB --> EXPORTER
     DCGMLIB --> PYAPI
     DCGMLIB --> CUSTOM
-    EXPORTER -->|scrape /metrics| PROM
+    EXPORTER --> PROM
     PROM --> GRAFANA
 ```
 
@@ -1377,29 +1372,22 @@ DCGM_FI_DEV_CLOCK_THROTTLE_REASONS            # → 32 for all GPUs
 
 ```mermaid
 flowchart TD
-    subgraph GPUOp ["GPU Operator DaemonSets — gpu-operator namespace"]
-        NFD["Node Feature Discovery<br/>Labels node: gpu.memory=80Gi"]
-        DRIVER["Driver DaemonSet<br/>Builds + loads nvidia.ko"]
-        DP["Device Plugin DaemonSet<br/>nvidia.com/gpu resource"]
-        DCGMEXP["DCGM Exporter DaemonSet<br/>nv-hostengine + dcgm-exporter<br/>:9400/metrics"]
-        MIG["MIG Manager DaemonSet<br/>Applies MIG geometry<br/>A100 / H100 only"]
-        TOOLKIT["Container Toolkit DaemonSet<br/>libnvidia-container<br/>CUDA runtime injection"]
-    end
-
-    subgraph Workload ["User Workload"]
-        JOB["Training Job Pod<br/>requests: nvidia.com/gpu: 8"]
-    end
-
-    subgraph Monitoring ["Monitoring Stack"]
-        SM["ServiceMonitor<br/>Prometheus Operator"]
-        PROM["Prometheus"]
-        ALERT["Alertmanager"]
-    end
+    NFD[Node Feature Discovery - labels GPU node]
+    DRIVER[Driver DaemonSet - loads nvidia.ko]
+    DP[Device Plugin - nvidia.com/gpu resource]
+    DCGMEXP[DCGM Exporter DaemonSet - port 9400]
+    MIG[MIG Manager - A100/H100 geometry]
+    TOOLKIT[Container Toolkit - CUDA runtime injection]
+    JOB[Training Job Pod - nvidia.com/gpu: 8]
+    SM[ServiceMonitor - Prometheus Operator]
+    PROM[Prometheus]
+    ALERT[Alertmanager]
 
     DRIVER --> DP
     NFD --> DP
     DP --> JOB
     MIG --> DCGMEXP
+    TOOLKIT --> JOB
     DCGMEXP --> SM
     SM --> PROM
     PROM --> ALERT
