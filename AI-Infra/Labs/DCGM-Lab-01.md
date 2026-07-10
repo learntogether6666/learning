@@ -53,23 +53,20 @@ queries the driver, prints state, exits. At hyperscale this breaks down in every
 framework for data center GPUs. The architecture is a classic agent-daemon pattern:
 
 ```mermaid
-graph TD
+flowchart TD
     subgraph Host ["Host (bare metal or VM)"]
-        NVD["NVIDIA Driver\n(kernel module)"]
-        HE["nv-hostengine\n(DCGM daemon)\nport 5555 / Unix socket"]
-        DCGMLIB["libdcgm.so\n(DCGM library)"]
-        
-        subgraph Clients ["DCGM Clients"]
-            DCGMI["dcgmi CLI"]
-            EXPORTER["dcgm-exporter\n(Prometheus :9400)"]
-            PYAPI["Python bindings\n(pydcgm)"]
-            CUSTOM["Custom app via\nlibdcgm / gRPC"]
-        end
+        NVD["NVIDIA Driver<br/>(kernel module)"]
+        HE["nv-hostengine<br/>DCGM daemon<br/>port 5555 / Unix socket"]
+        DCGMLIB["libdcgm.so<br/>DCGM library"]
+        DCGMI["dcgmi CLI"]
+        EXPORTER["dcgm-exporter<br/>Prometheus :9400"]
+        PYAPI["Python bindings<br/>pydcgm"]
+        CUSTOM["Custom app<br/>libdcgm / gRPC"]
     end
-    
-    subgraph Prometheus["Prometheus Stack"]
-        PROM["Prometheus\n:9090"]
-        GRAFANA["Grafana\n:3000"]
+
+    subgraph Stack ["Prometheus Stack"]
+        PROM["Prometheus<br/>:9090"]
+        GRAFANA["Grafana<br/>:3000"]
     end
 
     NVD --> HE
@@ -78,7 +75,7 @@ graph TD
     DCGMLIB --> EXPORTER
     DCGMLIB --> PYAPI
     DCGMLIB --> CUSTOM
-    EXPORTER -->|"scrape /metrics"| PROM
+    EXPORTER -->|scrape /metrics| PROM
     PROM --> GRAFANA
 ```
 
@@ -1379,35 +1376,33 @@ DCGM_FI_DEV_CLOCK_THROTTLE_REASONS            # → 32 for all GPUs
 ### GPU Operator Component Map
 
 ```mermaid
-graph TD
-    subgraph K8sNode ["Kubernetes GPU Node"]
-        subgraph GPUOp ["GPU Operator DaemonSets (namespace: gpu-operator)"]
-            NFD["Node Feature Discovery\nLabels node with GPU specs\ngpu.memory=80Gi, etc."]
-            DRIVER["Driver DaemonSet\nBuilds + loads nvidia.ko\nfor this kernel version"]
-            DP["Device Plugin DaemonSet\nnvidia.com/gpu resource\nAdvertises GPU slots to scheduler"]
-            DCGMEXP["DCGM Exporter DaemonSet\nnv-hostengine + dcgm-exporter\n:9400/metrics"]
-            MIG["MIG Manager DaemonSet\nApplies MIG geometry\n(A100/H100 only)"]
-            TOOLKIT["Container Toolkit DaemonSet\nlibnvidia-container\nCUDA runtime injection"]
-        end
-        
-        subgraph Workload ["User Workloads"]
-            JOB["Training Job Pod\nrequests: nvidia.com/gpu: 8"]
-        end
+flowchart TD
+    subgraph GPUOp ["GPU Operator DaemonSets — gpu-operator namespace"]
+        NFD["Node Feature Discovery<br/>Labels node: gpu.memory=80Gi"]
+        DRIVER["Driver DaemonSet<br/>Builds + loads nvidia.ko"]
+        DP["Device Plugin DaemonSet<br/>nvidia.com/gpu resource"]
+        DCGMEXP["DCGM Exporter DaemonSet<br/>nv-hostengine + dcgm-exporter<br/>:9400/metrics"]
+        MIG["MIG Manager DaemonSet<br/>Applies MIG geometry<br/>A100 / H100 only"]
+        TOOLKIT["Container Toolkit DaemonSet<br/>libnvidia-container<br/>CUDA runtime injection"]
     end
 
-    subgraph Monitoring["Monitoring Stack"]
-        SM["ServiceMonitor\n(Prometheus Operator)"]
+    subgraph Workload ["User Workload"]
+        JOB["Training Job Pod<br/>requests: nvidia.com/gpu: 8"]
+    end
+
+    subgraph Monitoring ["Monitoring Stack"]
+        SM["ServiceMonitor<br/>Prometheus Operator"]
         PROM["Prometheus"]
         ALERT["Alertmanager"]
     end
 
     DRIVER --> DP
+    NFD --> DP
     DP --> JOB
+    MIG --> DCGMEXP
     DCGMEXP --> SM
     SM --> PROM
     PROM --> ALERT
-    NFD --> DP
-    MIG --> DCGMEXP
 ```
 
 ### DCGM Exporter as DaemonSet
