@@ -1,0 +1,23 @@
+# State files contain sensitive values in plaintext (e.g. storage account keys) — never commit.
+*.tfstate
+*.tfstate.*
+
+# Plan files are ephemeral and can contain sensitive values.
+*.tfplan
+
+# Provider binaries/cache — large, machine-specific, restored by `tofu init`.
+**/.terraform/*
+
+# Local overrides / crash logs — machine-specific, never shared.
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+crash.log
+crash.*.log
+.terraformrc
+terraform.rc
+
+# Real tfvars may contain machine-specific overrides — only the .example is checked in.
+*.tfvars
+!*.tfvars.example

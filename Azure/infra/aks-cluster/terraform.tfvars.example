@@ -1,0 +1,6 @@
+# Copy to terraform.tfvars and adjust if needed. All variables already have
+# sensible lab defaults in variables.tf, so an empty/absent tfvars file works too.
+
+# subscription_id = "0a5a25eb-e88c-4dd3-9b6e-cd71db042088"
+# location        = "eastus"
+# general_max_count = 3
